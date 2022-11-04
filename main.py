@@ -1,21 +1,30 @@
 
+number_of_tickets = int(input('Сколько билетов вам нужно?'))
 
+age_less_than_18 = int(input('Сколько будет посетителей до 18 лет?'))
+age_from_18_to_25 = int(input('Сколько будет посетителей от 18 до 25 лет?'))
+age_from_25 = int(input('Сколько будет посетителей от 25 лет?'))
 
-per_cent = {'ТКБ': 5.6, 'СКБ': 5.9, 'ВТБ': 4.28, 'СБЕР': 4.0}
+total_amount = 0
 
-amount = input('Введите сумму')
+if number_of_tickets != age_less_than_18 + age_from_18_to_25 + age_from_25:
 
-deposit = []
+    print('Количество билетов не совпадает, введите данные заново')
 
-deposit.append(float(amount) / 100 * float(per_cent['ТКБ']))
-deposit.append(float(amount) / 100 * float(per_cent['СКБ']))
-deposit.append(float(amount) / 100 * float(per_cent['ВТБ']))
-deposit.append(float(amount) / 100 * float(per_cent['СБЕР']))
+else:
 
-max_value = max(deposit)
+    if age_from_18_to_25 > 0:
+        age_from_18_to_25 *= 990
+        total_amount += age_from_18_to_25
 
-print(deposit)
-print('Максимальная сумма, которую вы можете заработать -', max_value)
+    if age_from_25 > 0:
+        age_from_25 *= 1390
+        total_amount += age_from_25
+
+    if number_of_tickets > 3:
+        total_amount = total_amount - total_amount / 100 * 10
+
+    print(total_amount)
 
 
 
