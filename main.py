@@ -1,30 +1,42 @@
 
-number_of_tickets = int(input('Сколько билетов вам нужно?'))
+def sort(array):
+    for i in range(len(array)):
+        idx_max = i
+        for j in range(i, len(array)):
+            if array[j] < array[idx_max]:
+                idx_max = j
+    return array
 
-age_less_than_18 = int(input('Сколько будет посетителей до 18 лет?'))
-age_from_18_to_25 = int(input('Сколько будет посетителей от 18 до 25 лет?'))
-age_from_25 = int(input('Сколько будет посетителей от 25 лет?'))
 
-total_amount = 0
+def binary_search(array, element, left, right):
+    if element < array[0]:
+        return False
+    if left > right:
+        return right
 
-if number_of_tickets != age_less_than_18 + age_from_18_to_25 + age_from_25:
+    middle = (right + left) // 2
+    if (array[middle] == element) or (array[middle-1] < element <= array[middle]):
+        return middle - 1
+    elif element < array[middle]:
+        return binary_search(array, element, left, middle - 1)
+    else:
+        return binary_search(array, element, middle + 1, right)
 
-    print('Количество билетов не совпадает, введите данные заново')
 
+array = list(map(int, input('Введите целые числа через пробел:\n').split()))
+print('Отсортированный список:  ', sort(array))
+print('Индексы элементов:   ', [i for i in range(len(array))])
+element = int(input('Введите любое число: '))
+result = binary_search(array, element, 0, len(array) - 1)
+
+if not result and isinstance(result, bool):
+    print("Введенное число минимальное")
+elif result == -1:
+    print("Введенное число совпадает с нулевым элементом списка")
+elif result == len(array) - 1:
+    print("Введенное число больше последнего (%d - го) элемента списка" % (len(array) - 1))
 else:
-
-    if age_from_18_to_25 > 0:
-        age_from_18_to_25 *= 990
-        total_amount += age_from_18_to_25
-
-    if age_from_25 > 0:
-        age_from_25 *= 1390
-        total_amount += age_from_25
-
-    if number_of_tickets > 3:
-        total_amount = total_amount - total_amount / 100 * 10
-
-    print(total_amount)
+    print("Номер позиции элемента, который меньше введенного числа:", result)
 
 
 
