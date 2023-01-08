@@ -1,37 +1,72 @@
-from .base_page import BasePage
-from .locators import AuthLocators
+#!/usr/bin/python3
+# -*- encoding=utf8 -*-
+
 import os
 
+from pages.base import WebPage
+from pages.elements import WebElement, ManyWebElements
 
-class AuthPage(BasePage):
 
-    def __init__(self, driver, timeout=10):
-        super().__init__(driver, timeout)
-        url = os.getenv('MAIN_URL') or 'https://b2c.passport.rt.ru'
-        driver.get(url)
-        self.email = driver.find_element(*AuthLocators.AUTH_EMAIL)
-        self.password = driver.find_element(*AuthLocators.AUTH_PASS)
-        self.btn = driver.find_element(*AuthLocators.AUTH_BTN)
-        self.link_ua1 = driver.find_element(*AuthLocators.AUTH_LINK_UA1)
-        self.link_vk = driver.find_element(*AuthLocators.AUTH_LINK_VK)
-        self.link_ok = driver.find_element(*AuthLocators.AUTH_LINK_OK)
-        self.link_mail = driver.find_element(*AuthLocators.AUTH_LINK_MAIL)
-        self.link_google = driver.find_element(*AuthLocators.AUTH_LINK_GOOGLE)
-        self.link_ya = driver.find_element(*AuthLocators.AUTH_LINK_YA)
-        self.link_reg = driver.find_element(*AuthLocators.AUTH_LINK_REG)
-        self.link_cookie = driver.find_element(*AuthLocators.AUTH_LINK_COOKIE)
-        self.link_cp = driver.find_element(*AuthLocators.AUTH_LINK_CP)
-        self.link_ua2 = driver.find_element(*AuthLocators.AUTH_LINK_UA2)
-        self.link_phone = driver.find_element(*AuthLocators.AUTH_LINK_PHONE)
+class AuthPage(WebPage):
 
-    def enter_email(self, value):
-        self.email.send_keys(value)
+    def __init__(self, web_driver, url=''):
+        if not url:
+            url = os.getenv("AUTH_URL") or 'https://b2c.passport.rt.ru'
+        super().__init__(web_driver, url)
 
-    def enter_pass(self, value):
-        self.password.send_keys(value)
+        # self.login = web_driver.find_element(*MainPageLocators.LOGIN)
+        # self.password = web_driver.find_element(*MainPageLocators.PASSWORD)
+        # self.submit_btn = web_driver.find_element(*MainPageLocators.SUBMIT_BTN)
+        # self.forgot = web_driver.find_element(*MainPageLocators.FORGOT_BTN)
+        # self.register = web_driver.find_element(*MainPageLocators.REGISTER)
+        # self.placeholder = web_driver.find_element(*MainPageLocators.PLACEHOLDER)
+        # self.contract = web_driver.find_element(*MainPageLocators.CONTRACT)
+        # self.vk_btn = web_driver.find_element(*MainPageLocators.VK_BTN)
+        # self.ok_btn = web_driver.find_element(*MainPageLocators.OK_BTN)
+        # self.mailru_btn = web_driver.find_element(*MainPageLocators.MAILRU_BTN)
+        # self.google_btn = web_driver.find_element(*MainPageLocators.GOOGLE_BTN)
+        # self.ya_btn = web_driver.find_element(*MainPageLocators.YA_BTN)
 
-    def btn_click(self):
-        self.btn.click()
+    # Tabs for the auth form
+    by_phone = WebElement(id='t-btn-tab-phone')
+    by_email = WebElement(id='t-btn-tab-mail')
+    by_login = WebElement(id='t-btn-tab-login')
+    by_LS = WebElement(id='t-btn-tab-ls')
+
+    # Input fields of the auth form
+    login = WebElement(id='username')
+    login_value = WebElement(xpath='//*[@id="page-right"]/div/div/div/form/div[1]/div[2]/div/span[1]/span[1]')
+                                          #div.tabs-input-container__login > div .rt-input__mask-start
+    password = WebElement(id='password')
+    placeholder_login = WebElement(xpath='//*[@id="page-right"]/div/div/div/form/div[1]/div[2]/div/span[2]')
+    placeholder_pswrd = WebElement(xpath='//*[@id="page-right"]/div/div/div/form/div[2]/div/span[2]')
+    show_hide_pswrd = WebElement(css_selector='.rt-input__eye > path')
+    typed_pswrd = WebElement(xpath='//span[@class="rt-input__mask-start" and @xpath="1"]')
+
+    # Another elements of the auth form
+    check_box = WebElement(class_name='rt-checkbox__label')
+    submit_btn = WebElement(id='kc-login')
+
+    forgot_pswrd_link = WebElement(id='forgot_password')
+    forgot_password_form = WebElement(css_selector='h1.card-container__title')
+    invalid_login_message = WebElement(id='form-error-message')
+    forgot_orange_link = WebElement(
+        css_selector='.rt-link.rt-link--orange.login-form__forgot-pwd.login-form__forgot-pwd--animated')
+    auth_policy = WebElement(xpath='//*[@id="page-right"]/div/div/div/form/div[4]/a[1]')
+    agreement_link = WebElement(id='rt-footer-agreement-link')
+
+    register = WebElement(id='kc-register')
+    register_form = WebElement(css_selector='h1.card-container__title')
+
+    #Auth by social medias
+    vk_btn = WebElement(id='oidc_vk')
+    ok_btn = WebElement(id='oidc_ok')
+    mailru_btn = WebElement(id='oidc_mail')
+    google_btn = WebElement(id='oidc_google')
+    ya_btn = WebElement(id='oidc_ya')
+
+    #Erorr messages for empty login
+    error_empty_login = WebElement(class_name='.rt-input-container__meta.rt-input-container__meta--error')
         
         
         
